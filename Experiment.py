@@ -37,8 +37,6 @@ def run_experiment(matrix_name: str, A: Any, ranks: List[int],
             # Store results
             results['nystrom'][rank]['iters'].append(nys_iters)
             results['rpcholesky'][rank]['iters'].append(rp_iters)
-        # Clear the instances progress bar
-        tqdm.write('')
 
     return results
 
@@ -144,11 +142,11 @@ def plot_histogram(results: Dict, ranks: List[int], title: str, output_dir: str 
 def run_smile_experiment():
     """Run experiment for Smile matrix"""
     # Parameters
-    n = 1000
-    ranks = [50, 100, 150, 200, 250]
+    n = 100
+    ranks = [50, 100] # [50, 100, 150, 200, 250]
     num_instances = 50
     threshold = 0.0001
-    mu = 0.001
+    mu = 100
     
     print("Generating Smile matrix...")
     A_smile = smile(n, bandwidth=2.0)
@@ -168,11 +166,11 @@ def run_smile_experiment():
 def run_spiral_experiment():
     """Run experiment for Spiral matrix"""
     # Parameters
-    n = 1000
+    n = 100
     ranks = [50, 100, 150]
     num_instances = 50
     threshold = 0.0001
-    mu = 0.01
+    mu = 10
     
     print("Generating Spiral matrix...")
     A_spiral = robspiral(n)
