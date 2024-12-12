@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from PCG import pcg_solver
 from RPCholesky import rpcholesky
 from HelperFunctions.gallery import smile, robspiral
+from tqdm import tqdm
 
 def run_experiment(matrix_name: str, A: Any, ranks: List[int], 
                   num_instances: int, threshold: float, mu: float) -> Dict:
@@ -19,10 +20,10 @@ def run_experiment(matrix_name: str, A: Any, ranks: List[int],
     # Set random seed for reproducibility
     np.random.seed(101)
     
-    for rank in ranks:
+    for rank in ranks: 
         print(f"Processing rank {rank} for {matrix_name}")
         
-        for instance in range(num_instances):
+        for instance in tqdm(range(num_instances), desc=f"Rank {rank} Instances", position=1, leave=False):
             # Generate random right-hand side vector
             b = np.random.randn(n)
             x0 = np.zeros(n)
@@ -36,7 +37,9 @@ def run_experiment(matrix_name: str, A: Any, ranks: List[int],
             # Store results
             results['nystrom'][rank]['iters'].append(nys_iters)
             results['rpcholesky'][rank]['iters'].append(rp_iters)
-            
+        # Clear the instances progress bar
+        tqdm.write('')
+
     return results
 
 def plot_boxplot(results: Dict, ranks: List[int], title: str, output_dir: str = 'plots'):
